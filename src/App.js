@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
 import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css';
-var randomHexColor = require('random-hex-color')
+const randomHexColor = require('random-hex-color');
 
 const initialData = [
   {
@@ -66,7 +66,18 @@ const captions = {
 };
 
 const App = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(null);
+  const [isShowingChart, setIsShowingChart] = useState(false);
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('data')) {
+      sessionStorage.setItem('data', JSON.stringify(initialData));
+    }
+    setData(JSON.parse(sessionStorage.getItem('data')));
+  }, []);
+
+  //const [data, setData] = useState(initialData);
+  //const [data, setData] = useState(JSON.parse(sessionStorage.getItem('data')));
   const [songInput, setSongInput] = useState({
     bpm: 0,
     duration:0,
@@ -96,7 +107,14 @@ const App = () => {
       title: songInput.title  
     }
     console.log(formattedData);
-    setData([...data, formattedData]);
+    //setData([...data, formattedData]);
+    sessionStorage.setItem('data', JSON.stringify([...data, formattedData]));
+    setData(JSON.parse(sessionStorage.getItem('data')));
+  }
+
+  const triggerChartDisplay = () => {
+    setIsShowingChart(!isShowingChart);
+    console.log(data);
   }
 
   return  (
@@ -104,18 +122,21 @@ const App = () => {
       <header>
         <h1>Radar Chart Creator</h1>
       </header>
+      <button onClick={triggerChartDisplay}>Display Chart</button>
       <div className='data-display'>
-        <div>
-          <RadarChart
-            captions={captions}
-            data={data}
-            size={600}
-            />
-          </div>
+        {data && isShowingChart &&
+          <div>
+            <RadarChart
+              captions={captions}
+              data={JSON.parse(sessionStorage.getItem('data'))}
+              size={600}
+              />
+            </div>
+          }
           <div className='song-list'>
             <h2>Tracks</h2>
 
-            {data.map((item, index) => <h3 key={index} style={{color: item.meta.color}}>{index+1}. {item.title}</h3>)}
+            {data && data.map((item, index) => <h3 key={index} style={{color: item.meta.color}}>{index+1}. {item.title}</h3>)}
             
             <form onSubmit={handleSubmit}>
               <legend>
