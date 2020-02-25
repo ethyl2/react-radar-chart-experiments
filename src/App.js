@@ -67,7 +67,6 @@ const captions = {
 
 const App = () => {
   const [data, setData] = useState(null);
-  const [isShowingChart, setIsShowingChart] = useState(false);
 
   useEffect(() => {
     if (!sessionStorage.getItem('data')) {
@@ -76,8 +75,6 @@ const App = () => {
     setData(JSON.parse(sessionStorage.getItem('data')));
   }, []);
 
-  //const [data, setData] = useState(initialData);
-  //const [data, setData] = useState(JSON.parse(sessionStorage.getItem('data')));
   const [songInput, setSongInput] = useState({
     bpm: 0,
     duration:0,
@@ -93,28 +90,28 @@ const App = () => {
   }
 
   const handleSubmit = e => {
-    e.preventDefault();
+    //e.preventDefault();
     let formattedData = {
       data: {
-        bpm: songInput.bpm,
-        duration: songInput.duration,
-        key: songInput.key,
-        genre: songInput.genre,
-        popularity: songInput.popularity,
-        mood: songInput.mood
+        bpm: Number(songInput.bpm),
+        duration: Number(songInput.duration),
+        key: Number(songInput.key),
+        genre: Number(songInput.genre),
+        popularity: Number(songInput.popularity),
+        mood: Number(songInput.mood)
       },
       meta: { color: randomHexColor() },
       title: songInput.title  
     }
-    console.log(formattedData);
-    //setData([...data, formattedData]);
     sessionStorage.setItem('data', JSON.stringify([...data, formattedData]));
     setData(JSON.parse(sessionStorage.getItem('data')));
   }
 
-  const triggerChartDisplay = () => {
-    setIsShowingChart(!isShowingChart);
-    console.log(data);
+  const handleClear = () => {
+    //sessionStorage.removeItem('data');
+    //setData(null);
+    sessionStorage.setItem('data', JSON.stringify(initialData));
+    setData(JSON.parse(sessionStorage.getItem('data')));
   }
 
   return  (
@@ -122,14 +119,14 @@ const App = () => {
       <header>
         <h1>Radar Chart Creator</h1>
       </header>
-      <button onClick={triggerChartDisplay}>Display Chart</button>
+      
       <div className='data-display'>
-        {data && isShowingChart &&
+        {data &&
           <div>
             <RadarChart
               captions={captions}
               data={JSON.parse(sessionStorage.getItem('data'))}
-              size={600}
+              size={500}
               />
             </div>
           }
@@ -137,7 +134,9 @@ const App = () => {
             <h2>Tracks</h2>
 
             {data && data.map((item, index) => <h3 key={index} style={{color: item.meta.color}}>{index+1}. {item.title}</h3>)}
-            
+          </div>
+
+          <div>
             <form onSubmit={handleSubmit}>
               <legend>
                 Add Song
@@ -149,6 +148,7 @@ const App = () => {
                   id='title' 
                   onChange={handleChange} 
                   value={songInput.title}
+                  required
                 />
               </div>
 
@@ -232,8 +232,10 @@ const App = () => {
 
               <button type='submit'>Submit</button>
             </form>
+              <button onClick={handleClear}>Clear Extra Songs</button>
+            </div>
           </div>
-        </div>
+        
       </div>
     );
 }

@@ -6,14 +6,19 @@
 .App {
   text-align: center;
   background: black;
- 
+  min-height: 110vh;
   color: white;
   .data-display {
     display: flex;
-    justify-content: space-evenly;
+    flex-flow: row wrap;
+    justify-content: space-between;
     margin: 2rem;
     div {
-      width: 40%;
+      width: 30%;
+      @media (max-width: 1200px) {
+        width: 80%;
+        margin: 1rem auto;
+      }
     }
   }
   .song-list {
@@ -40,3 +45,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  legend {
+    font-size: 2rem;
+  }
+  div {
+    width: 100%;
+    
+    margin: 0.1rem auto;
+  }
+  input {
+    width: 100%;
+  }
+  
+}
+
+button {
+  padding: 0.5rem;
+  margin: 1rem;
+  border-radius: 3rem;
+  border: none;
+}
