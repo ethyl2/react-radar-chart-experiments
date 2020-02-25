@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+  background: black;
+ 
+  color: white;
+  .data-display {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 2rem;
+    div {
+      width: 40%;
+    }
+  }
+  .song-list {
+    h2 {
+      font-size: 2.5rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+      line-height: 4rem;
+    }
+  }
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+

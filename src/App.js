@@ -1,10 +1,10 @@
-import React from 'react';
- 
+import React, { useState } from 'react';
+import './App.scss';
 import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css';
 var randomHexColor = require('random-hex-color')
 
-const data = [
+const initialData = [
   {
     data: {
       bpm: 0.7,
@@ -66,17 +66,152 @@ const captions = {
 };
 
 const App = () => {
+  const [data, setData] = useState(initialData);
+  const [songInput, setSongInput] = useState({
+    bpm: 0,
+    duration:0,
+    key: 0,
+    genre: 0,
+    popularity: 0,
+    mood: 0,
+    title: ''
+  },);
+
+  const handleChange = e => {
+    setSongInput({...songInput, [e.target.name]: e.target.value});
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    let formattedData = {
+      data: {
+        bpm: songInput.bpm,
+        duration: songInput.duration,
+        key: songInput.key,
+        genre: songInput.genre,
+        popularity: songInput.popularity,
+        mood: songInput.mood
+      },
+      meta: { color: randomHexColor() },
+      title: songInput.title  
+    }
+    console.log(formattedData);
+    setData([...data, formattedData]);
+  }
+
   return  (
-    <div>
-      <div>
-        <RadarChart
-          captions={captions}
-          data={data}
-          size={750}
-          />
-        </div>
+    <div className='App'>
+      <header>
+        <h1>Radar Chart Creator</h1>
+      </header>
+      <div className='data-display'>
         <div>
-          {data.map((item, index) => <h2 style={{color: item.meta.color}}>{index+1}. {item.title}</h2>)}
+          <RadarChart
+            captions={captions}
+            data={data}
+            size={600}
+            />
+          </div>
+          <div className='song-list'>
+            <h2>Tracks</h2>
+
+            {data.map((item, index) => <h3 key={index} style={{color: item.meta.color}}>{index+1}. {item.title}</h3>)}
+            
+            <form onSubmit={handleSubmit}>
+              <legend>
+                Add Song
+              </legend>
+              <div>
+                <label htmlFor='title'>Song Title: </label>
+                <input type='text' 
+                  name='title' 
+                  id='title' 
+                  onChange={handleChange} 
+                  value={songInput.title}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='bpm'>BPM: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='bpm' 
+                  id='bpm' 
+                  onChange={handleChange} 
+                  value={songInput.bpm}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='duration'>duration: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='duration' 
+                  id='duration' 
+                  onChange={handleChange} 
+                  value={songInput.duration}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='key'>key: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='key' 
+                  id='key' 
+                  onChange={handleChange} 
+                  value={songInput.key}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='genre'>BPM: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='genre' 
+                  id='genre' 
+                  onChange={handleChange} 
+                  value={songInput.genre}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='popularity'>Popularity: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='popularity' 
+                  id='popularity' 
+                  onChange={handleChange} 
+                  value={songInput.popularity}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='mood'>Mood: </label>
+                <input type='number'
+                  min='0'
+                  step='0.01'
+                  max= '1' 
+                  name='mood' 
+                  id='mood' 
+                  onChange={handleChange} 
+                  value={songInput.mood}
+                />
+              </div>
+
+              <button type='submit'>Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     );
