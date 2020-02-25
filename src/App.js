@@ -67,13 +67,14 @@ const captions = {
 
 const App = () => {
   const [data, setData] = useState(null);
-
+  
   useEffect(() => {
     if (!sessionStorage.getItem('data')) {
       sessionStorage.setItem('data', JSON.stringify(initialData));
     }
     setData(JSON.parse(sessionStorage.getItem('data')));
   }, []);
+  
 
   const [songInput, setSongInput] = useState({
     bpm: 0,
@@ -113,12 +114,21 @@ const App = () => {
     sessionStorage.setItem('data', JSON.stringify(initialData));
     setData(JSON.parse(sessionStorage.getItem('data')));
   }
+  /*
+  const handlePopulate = () => {
+    sessionStorage.setItem('data', JSON.stringify(initialData));
+    setData(JSON.parse(sessionStorage.getItem('data')));  
+  }
+  */
 
   return  (
     <div className='App'>
       <header>
         <h1>Radar Chart Creator</h1>
       </header>
+
+      {/*<button onClick={handlePopulate}>Show Sample Data</button>*/
+      }
       
       <div className='data-display'>
         {data &&
