@@ -1,3 +1,9 @@
+## Description
+This app uses the react-svg-radar-chart npm package to display a radar chart.
+It is deployed at https://radar-chart.surge.sh/
+
+---------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
